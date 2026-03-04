@@ -1,0 +1,21 @@
+# env — JAMAIS commiter
+.env
+.env.local
+.env.production
+.env.staging
+.env*.local
+!.env.example
+
+# Next.js
+.next/
+out/
+build/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Misc
+.DS_Store
+*.pem
+.vercel
