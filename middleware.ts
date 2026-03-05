@@ -8,7 +8,6 @@ export async function middleware(request: NextRequest) {
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.error('Missing Supabase environment variables')
     return supabaseResponse
   }
 
@@ -20,11 +19,14 @@ export async function middleware(request: NextRequest) {
         getAll() {
           return request.cookies.getAll()
         },
+        // @ts-ignore
         setAll(cookiesToSet) {
+          // @ts-ignore
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           )
           supabaseResponse = NextResponse.next({ request })
+          // @ts-ignore
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
           )
@@ -33,8 +35,6 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // IMPORTANT: Do not use getUser() if you don't need to protect routes in middleware
-  // or if you want to avoid extra latency/potential failures in Edge environment.
   const { data: { user } } = await supabase.auth.getUser()
 
   const protectedPaths = ['/dashboard', '/campaigns', '/inbox', '/settings']
