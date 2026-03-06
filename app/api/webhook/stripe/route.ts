@@ -1,6 +1,7 @@
 import Stripe from 'stripe'
 import { headers } from 'next/headers'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { logger } from '@/lib/logger'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -25,7 +26,7 @@ export async function POST(req: Request) {
       process.env.STRIPE_WEBHOOK_SECRET!
     )
   } catch {
-    console.error('Webhook signature verification failed')
+    logger.error('Webhook signature verification failed')
     return new Response('Signature invalide', { status: 400 })
   }
 

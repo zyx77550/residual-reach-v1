@@ -1,6 +1,8 @@
 // LLM Router — Groq → Mistral → Google AI → fallback
 // Jamais de downtime LLM, 0€ de coût
 
+import { logger } from '@/lib/logger'
+
 export interface LLMOptions {
   temperature?: number
   maxTokens?:   number
@@ -97,10 +99,10 @@ export async function callLLM(
           setTimeout(() => reject(new Error('timeout')), 8000)
         ),
       ])
-      console.log(`✓ LLM: ${provider}`)
+      logger.info(`✓ LLM: ${provider}`)
       return result
     } catch (err) {
-      console.warn(`✗ LLM ${provider} failed:`, err)
+      logger.warn(`✗ LLM ${provider} failed:`, err)
     }
   }
 
