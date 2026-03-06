@@ -1,4 +1,5 @@
 import { callLLM } from '@/lib/llm/router'
+import { logger } from '@/lib/logger'
 import { buildIcpParserPrompt, SYSTEM_ICP_PARSER, buildEmailPrompt, buildSubjectPrompt, SYSTEM_EMAIL_WRITER, buildContextSummaryPrompt, SYSTEM_CONTEXT_BUILDER } from '@/lib/llm/prompts'
 import { generateEmailPatterns, validateDomain, validateEmailSmtp } from '@/lib/email/validator'
 import { createAdminClient } from '@/lib/supabase/admin'
@@ -62,7 +63,7 @@ export async function discoverCompanies(queries: string[]): Promise<Array<{ name
         })
       }
     } catch (err) {
-      console.warn('Discovery error:', err)
+      logger.warn('Discovery error:', err)
     }
     await sleep(1500 + Math.random() * 1000)
   }
